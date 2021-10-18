@@ -24,4 +24,6 @@
 </script>
 ```
 
+Результат
+
 ![Результат](https://github.com/aclips/bitrix-ui.entity-selector-wrapper/blob/main/example.gif)
