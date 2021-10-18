@@ -58,5 +58,5 @@
 
 Результат с табами
 
-![Результат с табами](https://github.com/aclips/bitrix-ui.entity-selector-wrapper/blob/main/example_tab.gif)
+![Результат с табами](https://github.com/aclips/bitrix-ui.entity-selector-wrapper/blob/main/example_with_tabs.gif)
 
