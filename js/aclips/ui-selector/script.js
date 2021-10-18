@@ -1,15 +1,24 @@
 BX.namespace('Plugin.UiSelector')
 
 /**
- * Плагин для создания объекта TagSelector
+ * Плагин для создания объекта TagSelector на базе статического списка
  * @type {{createTagSelector: BX.Plugin.UiSelector.createTagSelector, renderTagSelector: BX.Plugin.UiSelector.renderTagSelector}}
  */
 BX.Plugin.UiSelector = {
     /**
-     * {HTMLElement|String} container HTML element or its ID ("select" tag only)
+     * {HTMLElement|String} container HTML element or its ID ("select" tag only) select
+     * {{}} params
      */
-    createTagSelector: function (select) {
+    createTagSelector: function (select, params) {
         let target
+        let tabs = [{id: 'base', title: 'Элементы', itemOrder: {title: 'asc'}}]
+
+        if (typeof params == 'object') {
+            if (params.tabs) {
+                tabs = params.tabs
+            }
+        }
+
         if (typeof select === 'string') {
             target = document.getElementById(select)
             if (!target) {
@@ -19,25 +28,42 @@ BX.Plugin.UiSelector = {
             target = select;
         }
 
-        // @TODO Реализовать для множетвенного select
-        if (target.type != 'select-one') {
+        // Не реализовано под множественный выбор
+        if (target.type != 'select-one' /*&& target.type != 'select-multiple'*/) {
             throw new Error('Container must be Select')
         }
 
         let options = target.options
         let items = []
-        let selectedValues = []
 
         for (let option of options) {
             if (!option.value) {
                 continue
             }
 
+            let tab = 'base'
+
+            let datatTab = option.getAttribute('data-tab')
+
+            if (datatTab) {
+                tab = datatTab
+            }
+
+            let label = option.text
+
+            if (tabs.length > 1) {
+                let optionTab = tabs.find(e => e.id == tab)
+
+                if (optionTab) {
+                    label = optionTab.title + ': ' + label
+                }
+            }
+
             items.push({
                 id: option.value,
-                title: option.text,
+                title: label,
                 entityId: 'main',
-                tabs: 'main',
+                tabs: tab,
                 selected: option.selected
             })
         }
@@ -45,8 +71,10 @@ BX.Plugin.UiSelector = {
         let config = {
             node: target,
             multiple: target.type == 'select-multiple',
-            items: items
+            items: items,
+            tabs: tabs
         }
+
 
         this.renderTagSelector(config)
     },
@@ -68,9 +96,7 @@ BX.Plugin.UiSelector = {
                 dropdownMode: true,
                 enableSearch: false,
                 compactView: false,
-                tabs: [
-                    {id: 'main', title: 'Элементы', itemOrder: {title: 'asc'}},
-                ],
+                tabs: config.tabs,
             },
             events: {
                 onBeforeTagAdd: function (event) {
