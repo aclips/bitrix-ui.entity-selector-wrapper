@@ -102,9 +102,11 @@ BX.Plugin.UiSelector = {
                 onBeforeTagAdd: function (event) {
                     const {tag} = event.getData();
                     config.node.value = tag.getId()
+                    config.node.dispatchEvent(new Event('change'))
                 },
                 onBeforeTagRemove: function (event) {
                     config.node.value = null
+                    config.node.dispatchEvent(new Event('change'))
                 },
             }
         });
