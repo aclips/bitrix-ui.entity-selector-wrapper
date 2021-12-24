@@ -28,8 +28,7 @@ BX.Plugin.UiSelector = {
             target = select;
         }
 
-        // Не реализовано под множественный выбор
-        if (target.type != 'select-one' /*&& target.type != 'select-multiple'*/) {
+        if (target.type != 'select-one' && target.type != 'select-multiple') {
             throw new Error('Container must be Select')
         }
 
@@ -101,11 +100,33 @@ BX.Plugin.UiSelector = {
             events: {
                 onBeforeTagAdd: function (event) {
                     const {tag} = event.getData();
-                    config.node.value = tag.getId()
+
+                    if(config.multiple){
+                        let options = config.node.querySelectorAll('option[value="'+tag.getId()+'"]')
+
+                        if(options.length > 0) {
+                            options[0].selected = true
+                        }
+                    } else {
+                        config.node.value = tag.getId()
+                    }
+
                     config.node.dispatchEvent(new Event('change'))
                 },
                 onBeforeTagRemove: function (event) {
-                    config.node.value = null
+                    if(config.multiple){
+
+                        const {tag} = event.getData();
+
+                        let options = config.node.querySelectorAll('option[value="'+tag.getId()+'"]')
+
+                        if(options.length > 0) {
+                            options[0].selected = false
+                        }
+                    } else {
+                        config.node.value = null
+                    }
+
                     config.node.dispatchEvent(new Event('change'))
                 },
             }
