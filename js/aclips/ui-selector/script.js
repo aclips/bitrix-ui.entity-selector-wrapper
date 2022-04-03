@@ -5,6 +5,7 @@ BX.namespace('Plugin.UiSelector')
  * @type {{createTagSelector: BX.Plugin.UiSelector.createTagSelector, renderTagSelector: BX.Plugin.UiSelector.renderTagSelector}}
  */
 BX.Plugin.UiSelector = {
+    selectors: {},
     /**
      * {HTMLElement|String} container HTML element or its ID ("select" tag only) select
      * {{}} params
@@ -133,5 +134,18 @@ BX.Plugin.UiSelector = {
         });
 
         tagSelector.renderTo(config.node.parentNode);
+        
+        this.selectors[config.node.id] = tagSelector;
+    },
+    /**
+     * @param {string} select
+     */
+    getSelectors: function(select) {
+
+        if (select) {
+            return this.selectors[select];
+        }
+        
+        return this.selectors;
     }
 }
