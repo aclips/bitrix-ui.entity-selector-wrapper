@@ -72,8 +72,8 @@ BX.Plugin.UiSelector = {
             multiple: target.type == 'select-multiple',
             items: items,
             tabs: tabs,
-            showAddButton: params.showAddButton || false,
-            showTextBox: params.showTextBox || false,
+            showAddButton: params.showAddButton || true,
+            showTextBox: params.showTextBox || true,
             placeholder: params.placeholder || "",
         }
 
