@@ -71,7 +71,10 @@ BX.Plugin.UiSelector = {
             node: target,
             multiple: target.type == 'select-multiple',
             items: items,
-            tabs: tabs
+            tabs: tabs,
+            showAddButton: params.showAddButton || false,
+            showTextBox: params.showTextBox || false,
+            placeholder: params.placeholder || "",
         }
 
 
@@ -88,6 +91,9 @@ BX.Plugin.UiSelector = {
 
         const tagSelector = new BX.UI.EntitySelector.TagSelector({
             multiple: config.multiple,
+            showAddButton: config.showAddButton,
+            showTextBox: config.showTextBox,
+            placeholder: config.placeholder,
             dialogOptions: {
                 multiple: config.multiple,
                 items: config.items,
